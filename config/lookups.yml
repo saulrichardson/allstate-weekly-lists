@@ -1,0 +1,17 @@
+office_map:
+  0D6933: "San Marino"
+  0B3212: "La Palma"
+
+# Verbose product descriptions → short labels
+product_map:
+  "Auto - Private Passenger Voluntary": "Auto"
+  "Auto - Special": "Auto"
+  "Homeowners": "Home"
+  "Condominiums": "Condo"
+  "Renters": "Renters"
+  "Landlords": "Landlord"
+  "Personal Umbrella": "Umbrella"
+  "Boat Owners": "Boat"
+
+# Placeholder for future mappings
+cede_code_map: {}

@@ -1,0 +1,54 @@
+order:
+  - first_name
+  - last_name
+  - policy_number
+  - office
+  - event_date
+  - amount
+  - premium_old
+  - status
+  - product
+  - item_count
+  # Contact / address details removed from export to protect PII
+  # - phone
+  # - email
+  # - full_address
+
+columns:
+  pending_cancel:
+    rename:
+      event_date: Pending Cancel Date
+      amount: New Premium
+      premium_old: Old Premium
+      item_count: Items
+      product_name: Product
+      product: Product
+
+  renewal:
+    rename:
+      event_date: Renewal Effective Date
+      amount: New Premium
+      premium_old: Old Premium
+      premium_change_dollars: Premium Change Dollars
+      premium_change_percent: Premium Change Percent
+      amount_due: Amount Due
+      renewal_issue_date: Renewal Issue Date
+      renewal_status: Renewal Status
+      anniversary_effective_date: Anniversary Effective Date
+      item_count: Items
+      product_name: Product
+      product: Product
+      multi_line_indicator: Multi-Line Indicator
+      easy_pay: Easy Pay
+      option_package: Option Package
+      cede_code: Cede Code
+      years_prior_insurance: Years Prior Insurance
+
+  cancellation:
+    rename:
+      event_date: Cancel Date
+      amount: New Premium
+      premium_old: Old Premium
+      item_count: Items
+      product_name: Product
+      product: Product

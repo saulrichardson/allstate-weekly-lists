@@ -1,0 +1,51 @@
+employees:
+  - name: Tracy
+    priority_level: 1
+    predicate_cfg: {}
+    capacity_per_source:
+      pending_cancel: 0
+      cancellation: 5
+      renewal: 0
+
+  - name: Jill
+    priority_level: 2
+    predicate_cfg:
+      field: agent_number
+      op: "=="
+      value: "0B3212"
+    capacity_per_source:
+      pending_cancel: 0
+      cancellation: 10
+      renewal: 0
+
+  - name: Jack
+    priority_level: 3
+    predicate_cfg: {}
+    capacity_per_source:
+      pending_cancel: 0
+      cancellation: 15
+      renewal: 0
+
+  - name: Ray
+    priority_level: 3
+    predicate_cfg: {}
+    capacity_per_source:
+      pending_cancel: 0
+      cancellation: 15
+      renewal: 0
+
+  - name: Stanna
+    priority_level: 4
+    predicate_cfg: {}
+    capacity_per_source:
+      pending_cancel: 0
+      cancellation: 15
+      renewal: 0
+
+  - name: Kevin
+    priority_level: 5
+    predicate_cfg: {}
+    capacity_per_source:
+      pending_cancel: 0
+      cancellation: 15
+      renewal: 0

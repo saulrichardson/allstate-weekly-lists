@@ -1,0 +1,27 @@
+# OS files
+.DS_Store
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+
+# Output directory
+output/
+# Additional generated output directories
+output_test*/
+
+# Raw data inputs (potentially private)
+data/
+
+# Test and cache directories
+.pytest_cache/
+
+# Build artifacts
+*.egg-info/
+# Excel/PDF artifacts
+*.xlsx
+*.xls
+*.pdf
+
+# Virtualenv
+.venv/
