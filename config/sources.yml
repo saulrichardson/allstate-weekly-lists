@@ -7,6 +7,10 @@ sources:
     path_glob: "data/BOB_RenewalAudit__*.xlsx"
     normalizer: renewal
 
+  - name: cross_sell
+    path_glob: "data/BOB_CrossSellAudit__*.xlsx"
+    normalizer: cross_sell
+
   - name: cancellation
     path_glob: "data/BOB_CancellationAudit__*.xlsx"
     normalizer: cancellation

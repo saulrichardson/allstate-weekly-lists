@@ -60,6 +60,18 @@ def _write_excel(
                     workbook_frames[src_name] = subset
                     continue
 
+                # Sort rows so each sheet shows the actionable items first (soonest event).
+                sort_cols: list[str] = []
+                ascending: list[bool] = []
+                if "event_date" in subset.columns:
+                    sort_cols.append("event_date")
+                    ascending.append(True)
+                if "amount" in subset.columns:
+                    sort_cols.append("amount")
+                    ascending.append(False)
+                if sort_cols:
+                    subset = subset.sort_values(by=sort_cols, ascending=ascending, kind="mergesort")
+
                 fmt_subset = format_subset(
                     subset,
                     src_name=src_name,
@@ -68,6 +80,8 @@ def _write_excel(
                     drop_cols_global=drop_cols_global,
                 )
 
+                # add a blank 'Result' column for manual outcome/notes
+                fmt_subset["Result"] = ""
                 workbook_frames[src_name] = fmt_subset
 
                 # Write sheet
@@ -77,14 +91,26 @@ def _write_excel(
 
                 # Auto-fit columns
                 worksheet = writer.sheets[sheet_name]
-                MIN_W, MAX_W = 8, 40
+                # Keep most columns compact, but give the free-text
+                # "Result" column extra room so users can type longer notes
+                # directly in the exported workbook.  A wider default makes
+                # the column usable out-of-the-box without manual resizing.
+
+                MIN_W, MAX_W = 8, 60  # allow larger upper bound overall
                 for column_cells in worksheet.columns:
                     header = column_cells[0].value or ""
                     length = len(str(header))
                     for cell in column_cells[1:500]:  # up to 500 rows
                         if cell.value is not None:
                             length = max(length, len(str(cell.value)))
+                    # Base width on the longest encountered value plus some
+                    # padding, but ensure sensible min/max bounds.
                     width = max(length + 2, MIN_W)
+
+                    # Explicitly widen the dedicated notes column.
+                    if header.strip().lower() == "result":
+                        width = max(width, 40)  # enough space for free text
+
                     width = min(width, MAX_W)
                     worksheet.column_dimensions[column_cells[0].column_letter].width = width
 

@@ -70,6 +70,23 @@ def _get_event_date(task: Dict[str, Any]):
     return val
 
 
+def _interleave_extremes(tasks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Interleave earliest/latest tasks to balance leftovers across priorities."""
+
+    if len(tasks) <= 2:
+        return tasks
+    left, right = 0, len(tasks) - 1
+    woven: List[Dict[str, Any]] = []
+    while left < right:
+        woven.append(tasks[left])
+        woven.append(tasks[right])
+        left += 1
+        right -= 1
+    if left == right:
+        woven.append(tasks[left])
+    return woven
+
+
 def _assign_round_robin(
     tasks: List[Dict[str, Any]],
     employees: List[Employee],
@@ -84,13 +101,38 @@ def _assign_round_robin(
     assigned: List[Tuple[Dict[str, Any], str]] = []
 
     for task in tasks:
+        # Handle exclusive assignments first for this level. If the target
+        # employee is not in this level's cohort, defer to their level by
+        # skipping any attempt to allocate this task here.
+        exclusive_to = task.get("exclusive_assignee")
+        # Normalize NaN/empty to None so only real names are treated as exclusive
+        try:
+            from math import isnan as _isnan
+            if isinstance(exclusive_to, float) and _isnan(exclusive_to):
+                exclusive_to = None
+        except Exception:
+            pass
+        if isinstance(exclusive_to, str) and exclusive_to.strip() == "":
+            exclusive_to = None
+        if exclusive_to is not None:
+            target = next((e for e in employees if e.name == exclusive_to), None)
+            if target is not None and target.accept_task(task, src_name):
+                assigned.append((task, target.name))
+                # Do not decrement capacity for exclusive tasks
+                continue
+            else:
+                # Defer to later levels – do not assign to others
+                continue
+
         for _ in range(len(employees)):
             emp = next(emp_cycle)
             if not emp.has_capacity(src_name):
                 continue
             if emp.accept_task(task, src_name):
                 assigned.append((task, emp.name))
-                emp.decrement_capacity(src_name)
+                # Only decrement capacity for non-exclusive tasks
+                if task.get("exclusive_assignee") != emp.name:
+                    emp.decrement_capacity(src_name)
                 break
 
     return assigned
@@ -119,6 +161,7 @@ def _assign_single_source(
         # Sort for allocation: earliest event date first, and for same date highest premium
         src_tasks.sort(key=_get_premium, reverse=True)
         src_tasks.sort(key=_get_event_date)
+        src_tasks = _interleave_extremes(src_tasks)
 
         # Iterate levels ascending
         levels = sorted({e.priority_level for e in employees})

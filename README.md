@@ -54,6 +54,13 @@ The loader (`src/loaders.py`) reads each sheet (with `header=4`), applies the no
   so you explicitly enumerate every incoming column in the normalizers and drop anything you
   haven’t explicitly mapped.
 
+Notes:
+- Rows with an `event_date` earlier than today are filtered out globally.
+- Additionally, only rows within a 15-day window from today are included by default.
+  You can override this horizon by setting `MAX_DAYS_AHEAD` (e.g., `MAX_DAYS_AHEAD=21`).
+  For the Cross Sell audit, `event_date` is derived from `Renewal Effective Date`,
+  so only upcoming opportunities within the window appear in outputs.
+
 ## Assignment logic
 
 - Each employee in `employees.yml` specifies a `prefer` key (`high` or `low`).

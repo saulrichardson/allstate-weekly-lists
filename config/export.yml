@@ -44,6 +44,16 @@ columns:
       cede_code: Cede Code
       years_prior_insurance: Years Prior Insurance
 
+  cross_sell:
+    rename:
+      event_date: Renewal Effective Date
+      product_name: Product
+      product: Product
+      associated_product_name: Associated Product
+      associated_policy_number: Associated Policy Number
+      associated_effective_date: Associated Effective Date
+      associated_agent_number: Associated Agent
+
   cancellation:
     rename:
       event_date: Cancel Date
