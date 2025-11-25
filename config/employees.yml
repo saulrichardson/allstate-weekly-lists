@@ -4,7 +4,7 @@ employees:
     predicate_cfg: {}
     capacity_per_source:
       pending_cancel: 0
-      cancellation: 10
+      cancellation: 3
       renewal: 0
 
   - name: Jill
@@ -15,7 +15,7 @@ employees:
       value: "0B3212"
     capacity_per_source:
       pending_cancel: 0
-      cancellation: 10
+      cancellation: 8
       renewal: 0
 
   - name: Jack
@@ -23,7 +23,7 @@ employees:
     predicate_cfg: {}
     capacity_per_source:
       pending_cancel: 0
-      cancellation: 15
+      cancellation: 16
       renewal: 0
 
   - name: Ray
@@ -31,13 +31,13 @@ employees:
     predicate_cfg: {}
     capacity_per_source:
       pending_cancel: 0
-      cancellation: 0
+      cancellation: 16
       renewal: 0
 
   - name: Stanna
-    priority_level: 4
+    priority_level: 3
     predicate_cfg: {}
     capacity_per_source:
       pending_cancel: 0
-      cancellation: 15
+      cancellation: 16
       renewal: 0

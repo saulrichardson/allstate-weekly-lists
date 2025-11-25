@@ -157,7 +157,13 @@ def load_all_sources(base_dir: Path) -> pd.DataFrame:
                 from datetime import date as _date, timedelta as _timedelta
                 today = _date.today()
                 before = len(df)
-                df = df[df["event_date"].notna() & (df["event_date"] >= today)]
+                try:
+                    env_val = os.getenv("MIN_DAYS_BEFORE")
+                    min_days_before = int(env_val.strip()) if env_val else 0
+                except Exception:
+                    min_days_before = 0
+                lower = today - _timedelta(days=max(0, min_days_before))
+                df = df[df["event_date"].notna() & (df["event_date"] >= lower)]
                 # Apply an upper bound: default 15 days ahead; override with MAX_DAYS_AHEAD
                 try:
                     env_val = os.getenv("MAX_DAYS_AHEAD")
